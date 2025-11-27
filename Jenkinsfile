@@ -3,15 +3,12 @@ pipeline {
 
     stages {
 
-        stage('Build') {
-            steps {
-                echo 'Installing Flask using apt-get instead of pip...'
-                sh '''
-                    apt-get update
-                    apt-get install -y python3-flask
-                '''
-            }
-        }
+       stage('Build') {
+    steps {
+        echo 'Dependencies already installed inside Jenkins container.'
+    }
+}
+
 
         stage('Test') {
             steps {
