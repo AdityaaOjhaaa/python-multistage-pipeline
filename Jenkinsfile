@@ -1,15 +1,21 @@
- stages {
+pipeline {
+    agent any
+
+    stages {
 
         stage('Build') {
             steps {
-                echo 'Installing dependencies...'
-                sh 'pip3 install -r requirements.txt'
+                echo 'Installing Flask using apt-get instead of pip...'
+                sh '''
+                    apt-get update
+                    apt-get install -y python3-flask
+                '''
             }
         }
 
         stage('Test') {
             steps {
-                echo "Running unit tests..."
+                echo 'Running tests...'
                 sh 'python3 -m unittest discover -s .'
             }
         }
@@ -36,7 +42,7 @@
 
         stage('Test Application') {
             steps {
-                echo "Testing application by hitting route..."
+                echo "Testing application..."
                 sh 'python3 test_app.py'
             }
         }
@@ -45,4 +51,10 @@
     post {
         success {
             echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Check logs."
+        }
+    }
+}
 
